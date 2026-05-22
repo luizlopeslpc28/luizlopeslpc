@@ -1,0 +1,259 @@
+<div class="min-h-screen bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 pb-16 font-sans">
+  
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 h-16">
+    <div class="max-w-4xl mx-auto px-6 h-full flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <button (click)="goBack()" class="flex items-center justify-center gap-2 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors">
+          <iconify-icon icon="lucide:arrow-left"></iconify-icon> Voltar
+        </button>
+      </div>
+      <div class="flex items-center gap-4">
+        @if (saved) {
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 animate-pulse hidden md:block">Salvo!</span>
+        }
+        @if (saveError) {
+          <span class="text-xs font-bold uppercase tracking-widest text-red-600 dark:text-red-400 hidden md:block max-w-[200px] truncate" [title]="saveError">{{ saveError }}</span>
+        }
+        <button (click)="logout()" class="text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors hidden sm:block">Sair</button>
+        <button (click)="save()" [disabled]="isSaving" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm disabled:opacity-50">
+          @if (isSaving) {
+            <iconify-icon icon="lucide:loader-2" class="animate-spin text-lg"></iconify-icon> Salvando...
+          } @else {
+            Avançar <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+          }
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Forms -->
+  <main class="py-12 px-6 max-w-4xl mx-auto flex flex-col gap-10 text-neutral-900 dark:text-white">
+    <form [formGroup]="form" class="flex flex-col gap-8 w-full">
+      
+      <!-- Identidade e Início -->
+      <section class="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div class="mb-8">
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
+            <iconify-icon icon="lucide:sparkles" class="text-xl"></iconify-icon>
+          </div>
+          <h1 class="text-xl font-bold mb-1">Identidade da sua página</h1>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">Defina a identidade visual e as primeiras informações do seu conteúdo.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-x-6 gap-y-6" formGroupName="config">
+          <div class="md:col-span-2">
+            <label for="configName" class="block text-sm font-bold mb-1">Nome no Header</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Nome ou logo textual que aparece no topo.</p>
+            <input id="configName" type="text" formControlName="name" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-x-6 gap-y-6 mt-6" formGroupName="home">
+          <div class="md:col-span-2">
+            <label for="homeGreeting" class="block text-sm font-bold mb-1">Saudação inicial</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Exemplo: "Olá! 👋 Esse é o meu portfólio".</p>
+            <input id="homeGreeting" type="text" formControlName="greeting" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+          <div class="md:col-span-2">
+            <label for="homeHeadline" class="block text-sm font-bold mb-1">Título principal</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Sua principal promessa ou descrição curta de quem você é.</p>
+            <input id="homeHeadline" type="text" formControlName="headline" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+          <div class="md:col-span-2">
+            <label for="homeDesc" class="block text-sm font-bold mb-1">Descrição</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Seja detalhado: descreva o que você faz, serviços/produtos e diferenciais.</p>
+            <textarea id="homeDesc" formControlName="description" rows="4" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-y leading-relaxed"></textarea>
+          </div>
+          <div class="md:col-span-2">
+            <label for="homeCta" class="block text-sm font-bold mb-1">Ação Principal (CTA)</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Texto para o botão principal da tela inicial.</p>
+            <input id="homeCta" type="text" formControlName="ctaLabel" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+        </div>
+      </section>
+
+      <!-- Sobre Mim -->
+      <section class="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div class="mb-8">
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
+            <iconify-icon icon="lucide:user" class="text-xl"></iconify-icon>
+          </div>
+          <h1 class="text-xl font-bold mb-1">Sua biografia</h1>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">Descreva sua trajetória e habilidades principais de forma atrativa.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-x-6 gap-y-6" formGroupName="about">
+          <div class="md:col-span-2">
+            <label for="aboutText1" class="block text-sm font-bold mb-1">Parágrafo introdutório</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Um resumo forte sobre sua área de atuação.</p>
+            <textarea id="aboutText1" formControlName="text1" rows="3" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors leading-relaxed"></textarea>
+          </div>
+          <div class="md:col-span-2">
+            <label for="aboutText2" class="block text-sm font-bold mb-1">Desenvolvimento e carreira</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Fale sobre seu histórico e onde você quer chegar.</p>
+            <textarea id="aboutText2" formControlName="text2" rows="3" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors leading-relaxed"></textarea>
+          </div>
+          <div class="md:col-span-2">
+            <label for="aboutSkills" class="block text-sm font-bold mb-1">Habilidades</label>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-2">Suas principais competências técnicas, separadas por vírgula.</p>
+            <input id="aboutSkills" type="text" formControlName="skills" placeholder="Design, Engenharia, Estratégia..." class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+        </div>
+      </section>
+
+      <!-- Projetos -->
+      <section class="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div class="flex items-start justify-between mb-8">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
+              <iconify-icon icon="lucide:layout-dashboard" class="text-xl"></iconify-icon>
+            </div>
+            <h1 class="text-xl font-bold mb-1">Mural de projetos</h1>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Mostre no que você esteve trabalhando ultimamente.</p>
+          </div>
+          <button type="button" (click)="addProject()" class="text-sm font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors">
+            <iconify-icon icon="lucide:plus" class="text-base"></iconify-icon> Adicionar
+          </button>
+        </div>
+        
+        <div formArrayName="projects" class="flex flex-col gap-6">
+          @for (projectForm of projects.controls; track $index) {
+            <div [formGroupName]="$index" class="p-6 bg-neutral-50 dark:bg-neutral-950/30 border border-neutral-200 dark:border-neutral-800 rounded-xl grid md:grid-cols-2 gap-x-6 gap-y-5 relative group">
+              <button type="button" title="Remover projeto" (click)="removeProject($index)" class="absolute top-4 right-4 text-neutral-400 hover:text-red-600 p-1.5 rounded-md hover:bg-white dark:hover:bg-neutral-800 transition-colors opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                 <iconify-icon icon="lucide:trash-2" class="text-lg"></iconify-icon>
+              </button>
+              
+              <div>
+                <label [for]="'projTitle-' + $index" class="block text-sm font-bold mb-1">Título</label>
+                <input [id]="'projTitle-' + $index" type="text" formControlName="title" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+              </div>
+              <div>
+                <label [for]="'projIcon-' + $index" class="block text-sm font-bold mb-1">Ícone</label>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400 mb-1 max-w-[200px] truncate">Referência em lucide:*</p>
+                <input [id]="'projIcon-' + $index" type="text" formControlName="icon" placeholder="lucide:folder" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+              </div>
+              <div class="md:col-span-2">
+                <label [for]="'projDesc-' + $index" class="block text-sm font-bold mb-1">Descrição</label>
+                <textarea [id]="'projDesc-' + $index" formControlName="description" rows="2" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors leading-relaxed"></textarea>
+              </div>
+              <div>
+                <label [for]="'projTech-' + $index" class="block text-sm font-bold mb-1">Tecnologias</label>
+                <input [id]="'projTech-' + $index" type="text" formControlName="tech" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+              </div>
+               <div>
+                <label [for]="'projUrl-' + $index" class="block text-sm font-bold mb-1">URL (Link)</label>
+                <input [id]="'projUrl-' + $index" type="url" formControlName="url" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+              </div>
+            </div>
+          }
+          @if (projects.length === 0) {
+            <p class="text-sm text-neutral-500 text-center p-8 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl">Você ainda não adicionou nenhum projeto.</p>
+          }
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div class="flex items-start justify-between mb-8">
+          <div>
+             <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
+              <iconify-icon icon="lucide:message-circle-question" class="text-xl"></iconify-icon>
+            </div>
+            <h1 class="text-xl font-bold mb-1">Dúvidas Frequentes</h1>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">Antecipe e responda perguntas do seu público ideal.</p>
+          </div>
+          <button type="button" (click)="addFaq()" class="text-sm font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors">
+            <iconify-icon icon="lucide:plus" class="text-base"></iconify-icon> Adicionar
+          </button>
+        </div>
+        
+        <div formArrayName="faqs" class="flex flex-col gap-6">
+          @for (faqForm of faqs.controls; track $index) {
+            <div [formGroupName]="$index" class="p-6 bg-neutral-50 dark:bg-neutral-950/30 border border-neutral-200 dark:border-neutral-800 rounded-xl grid gap-y-5 relative group">
+              <button type="button" title="Remover dúvida" (click)="removeFaq($index)" class="absolute top-4 right-4 text-neutral-400 hover:text-red-600 p-1.5 rounded-md hover:bg-white dark:hover:bg-neutral-800 transition-colors opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                 <iconify-icon icon="lucide:trash-2" class="text-lg"></iconify-icon>
+              </button>
+              <div>
+                <label [for]="'faqQ-' + $index" class="block text-sm font-bold mb-1">Pergunta</label>
+                <input [id]="'faqQ-' + $index" type="text" formControlName="question" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+              </div>
+              <div>
+                <label [for]="'faqA-' + $index" class="block text-sm font-bold mb-1">Resposta completa</label>
+                <textarea [id]="'faqA-' + $index" formControlName="answer" rows="3" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors leading-relaxed"></textarea>
+              </div>
+            </div>
+          }
+          @if (faqs.length === 0) {
+           <p class="text-sm text-neutral-500 text-center p-8 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl">Sem perguntas frentrely feitas cadastradas.</p>
+          }
+        </div>
+      </section>
+
+      <!-- Contato & Redes Sociais -->
+      <section class="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6 md:p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+        <div class="mb-8">
+           <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
+              <iconify-icon icon="lucide:contact" class="text-xl"></iconify-icon>
+            </div>
+          <h1 class="text-xl font-bold mb-1">Comunicação e Redes</h1>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">Configure como você quer se comunicar com seu público.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-x-6 gap-y-6 pb-8 border-b border-neutral-200 dark:border-neutral-800 mb-8" formGroupName="contact">
+          <div class="md:col-span-2">
+            <label for="contactTitle" class="block text-sm font-bold mb-1">Título da seção de contato</label>
+            <input id="contactTitle" type="text" formControlName="title" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+          <div class="md:col-span-2">
+            <label for="contactDesc" class="block text-sm font-bold mb-1">Chamada para envio de mensagem</label>
+            <textarea id="contactDesc" formControlName="description" rows="2" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors leading-relaxed"></textarea>
+          </div>
+          <div>
+            <label for="contactEmail" class="block text-sm font-bold mb-1">E-mail Principal</label>
+            <input id="contactEmail" type="email" formControlName="email" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+          <div>
+            <label for="contactFooter" class="block text-sm font-bold mb-1">Aviso legal (Rodapé)</label>
+             <input id="contactFooter" type="text" formControlName="footerText" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-bold">Redes Sociais</h3>
+            <button type="button" (click)="addSocial()" class="text-sm font-medium bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-900 dark:text-white px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+              <iconify-icon icon="lucide:plus" class="text-base"></iconify-icon> Adicionar
+            </button>
+          </div>
+          <div formArrayName="socials" class="flex flex-col gap-4">
+            @for (socialForm of socials.controls; track $index) {
+              <div [formGroupName]="$index" class="p-5 bg-neutral-50 dark:bg-neutral-950/30 border border-neutral-200 dark:border-neutral-800 rounded-lg grid md:grid-cols-3 gap-x-6 gap-y-4 relative group">
+                <button type="button" title="Remover rede social" (click)="removeSocial($index)" class="absolute top-3 right-3 text-neutral-400 hover:text-red-600 p-1.5 rounded-md hover:bg-white dark:hover:bg-neutral-800 transition-colors opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                 <iconify-icon icon="lucide:x" class="text-lg"></iconify-icon>
+                </button>
+                <div>
+                  <label [for]="'socialPlat-' + $index" class="block text-xs font-bold uppercase tracking-wide text-neutral-500 mb-1">Plataforma</label>
+                  <input [id]="'socialPlat-' + $index" type="text" formControlName="platform" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm pr-8 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                </div>
+                <div>
+                  <label [for]="'socialIcon-' + $index" class="block text-xs font-bold uppercase tracking-wide text-neutral-500 mb-1">Ícone</label>
+                  <input [id]="'socialIcon-' + $index" type="text" formControlName="icon" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm pr-8 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                </div>
+                <div>
+                   <label [for]="'socialUrl-' + $index" class="block text-xs font-bold uppercase tracking-wide text-neutral-500 mb-1">URL</label>
+                   <input [id]="'socialUrl-' + $index" type="url" formControlName="url" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm pr-8 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                </div>
+              </div>
+             }
+             @if (socials.length === 0) {
+               <p class="text-sm text-neutral-500 text-center p-4 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl">Você ainda não adicionou redes sociais.</p>
+             }
+          </div>
+        </div>
+      </section>
+
+    </form>
+  </main>
+</div>
+

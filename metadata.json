@@ -1,0 +1,6 @@
+{
+  "name": "Luiz Portfolio CMS",
+  "description": "Portfólio interativo com painel de controle (CMS) conectado ao Supabase. Apresente seus projetos e experiências com facilidade.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

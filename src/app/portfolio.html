@@ -1,0 +1,200 @@
+<div class="min-h-screen bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 transition-colors duration-300">
+  
+  <!-- Header & Nav (Glassmorphism) -->
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-black/5 dark:border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+      <a href="#" class="text-[18px] font-bold tracking-tight select-none">{{ data().config.name }}</a>
+      <nav class="hidden md:flex gap-6">
+        <a href="#about" class="text-[14px] font-medium text-neutral-600 hover:text-brand-neon dark:text-neutral-400 dark:hover:text-violet-400 transition-colors">Sobre Mim</a>
+        <a href="#projects" class="text-[14px] font-medium text-neutral-600 hover:text-brand-neon dark:text-neutral-400 dark:hover:text-violet-400 transition-colors">Projetos</a>
+        <a href="#faq" class="text-[14px] font-medium text-neutral-600 hover:text-brand-neon dark:text-neutral-400 dark:hover:text-violet-400 transition-colors">FAQ</a>
+        <a href="#contact" class="text-[14px] font-medium text-neutral-600 hover:text-brand-neon dark:text-neutral-400 dark:hover:text-violet-400 transition-colors">Contato</a>
+      </nav>
+      <!-- Action triggers -->
+      <div class="hidden md:flex items-center gap-4">
+        <a href="#projects" class="flex h-10 px-4 flex-col justify-center rounded-lg bg-neutral-900 text-[14px] font-medium text-white dark:bg-white dark:text-neutral-900 transition-colors">Ver Projetos</a>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <button class="md:hidden flex items-center justify-center p-2 text-neutral-900 dark:text-white" (click)="toggleMobileMenu()" aria-label="Toggle Menu">
+         <iconify-icon [icon]="isMobileMenuOpen ? 'lucide:x' : 'lucide:menu'" class="text-[24px]"></iconify-icon>
+      </button>
+    </div>
+    
+    <!-- Mobile Menu dropdown -->
+    @if (isMobileMenuOpen) {
+      <div class="md:hidden absolute top-16 left-0 w-full bg-white dark:bg-neutral-950 border-b border-black/5 dark:border-white/5 flex flex-col p-4 shadow-lg animate-fade-in">
+        <a href="#about" (click)="toggleMobileMenu()" class="block py-3 px-4 text-[15px] font-medium border-b border-neutral-100 dark:border-neutral-800">Sobre Mim</a>
+        <a href="#projects" (click)="toggleMobileMenu()" class="block py-3 px-4 text-[15px] font-medium border-b border-neutral-100 dark:border-neutral-800">Projetos</a>
+        <a href="#faq" (click)="toggleMobileMenu()" class="block py-3 px-4 text-[15px] font-medium border-b border-neutral-100 dark:border-neutral-800">FAQ</a>
+        <a href="#contact" (click)="toggleMobileMenu()" class="block py-3 px-4 text-[15px] font-medium">Contato</a>
+      </div>
+    }
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-32 pb-16 px-6 max-w-7xl mx-auto flex flex-col gap-32">
+    
+    <!-- Hero / Inicio -->
+    <section id="home" class="min-h-[60vh] flex flex-col justify-center animate-section">
+      <div class="max-w-3xl">
+        <p class="text-[16px] text-brand-neon dark:text-violet-400 font-medium mb-4">{{ data().home.greeting }}</p>
+        <h1 class="text-[32px] md:text-[40px] font-bold tracking-tight leading-tight mb-6">
+          {{ data().home.headline }}
+        </h1>
+        <p class="text-[18px] text-neutral-600 dark:text-neutral-400 mb-10 max-w-2xl leading-relaxed whitespace-pre-wrap">{{ data().home.description }}</p>
+        <div class="flex items-center gap-4">
+          <a href="#projects" class="inline-flex items-center gap-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-3 rounded-xl font-medium text-[16px] hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all hover:-translate-y-0.5 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+            {{ data().home.ctaLabel }}
+            <iconify-icon icon="lucide:arrow-right" class="text-[18px] w-[18px] h-[18px] leading-none"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre Mim -->
+    <section id="about" class="animate-section scroll-mt-32">
+      <div class="grid md:grid-cols-2 gap-12 items-start">
+        <div>
+          <h2 class="text-[24px] font-bold tracking-tight mb-6">Sobre Mim</h2>
+          <div class="text-[16px] text-neutral-600 dark:text-neutral-400 space-y-4 leading-relaxed">
+            <p class="whitespace-pre-wrap">{{ data().about.text1 }}</p>
+            <p class="whitespace-pre-wrap">{{ data().about.text2 }}</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/5 rounded-2xl p-6 md:p-8 shadow-[0_4px_12px_rgba(0,0,0,0.05)] flex flex-col gap-6">
+          <h3 class="text-[18px] font-semibold tracking-tight">Habilidades Técnicas</h3>
+          <div class="flex flex-wrap gap-2">
+            @for (skill of data().about.skills; track skill) {
+              <span class="bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 px-3 py-1.5 rounded-lg text-[14px] font-medium border border-black/5 dark:border-white/5">
+                {{ skill }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projetos -->
+    <section id="projects" class="animate-section scroll-mt-32">
+       <div class="mb-10">
+         <h2 class="text-[24px] font-bold tracking-tight mb-2">Projetos em Destaque</h2>
+         <p class="text-[16px] text-neutral-600 dark:text-neutral-400">Soluções desenvolvidas para otimizar fluxos de trabalho e dados.</p>
+       </div>
+       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (project of data().projects; track project.id) {
+            <div class="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:-translate-y-1 hover:shadow-[0_8px_16px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col h-full group">
+              <div class="mb-6 flex-grow">
+                <div class="w-12 h-12 bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300 group-hover:bg-violet-100 group-hover:text-violet-600 dark:group-hover:bg-violet-900/40 dark:group-hover:text-violet-400 text-[24px]">
+                  <iconify-icon [icon]="project.icon || 'lucide:folder'"></iconify-icon>
+                </div>
+                <h3 class="text-[18px] font-semibold tracking-tight mb-3">{{ project.title }}</h3>
+                <p class="text-[14px] text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed whitespace-pre-wrap">{{ project.description }}</p>
+                <div class="flex flex-wrap gap-2">
+                  @for (tech of project.tech; track tech) {
+                    <span class="text-[12px] font-medium text-neutral-500 dark:text-neutral-400 bg-neutral-50 border border-black/5 dark:bg-neutral-950 dark:border-white/5 px-2 py-1 rounded-md">
+                      {{ tech }}
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="mt-auto">
+                <a [href]="project.url || '#'" [target]="project.url ? '_blank' : '_self'" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[14px] font-semibold text-brand-neon dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors">
+                  {{ project.actionLabel }}
+                  <iconify-icon icon="lucide:arrow-right" class="text-[16px] w-4 h-4 leading-none transition-transform duration-300 group-hover:translate-x-1"></iconify-icon>
+                </a>
+              </div>
+            </div>
+          }
+          @if (data().projects.length === 0) {
+            <p class="text-neutral-500 text-[14px]">Nenhum projeto cadastrado no momento.</p>
+          }
+       </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="animate-section scroll-mt-32">
+       <div class="max-w-3xl mx-auto">
+          <h2 class="text-[24px] font-bold tracking-tight mb-8 text-center bg-white/0">Dúvidas Frequentes</h2>
+          <div class="flex flex-col gap-4">
+             @for (faq of data().faqs; track faq.id) {
+               <div class="bg-white dark:bg-neutral-900 border border-black/5 dark:border-white/5 rounded-2xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
+                  <h3 class="text-[16px] font-semibold tracking-tight mb-2 text-neutral-900 dark:text-white flex items-start gap-2">
+                     <iconify-icon icon="lucide:help-circle" class="text-brand-neon dark:text-violet-400 text-[20px] w-5 h-5 leading-none shrink-0 mt-0.5"></iconify-icon>
+                     {{ faq.question }}
+                  </h3>
+                  <p class="text-[14px] text-neutral-600 dark:text-neutral-400 pl-7 leading-relaxed whitespace-pre-wrap">{{ faq.answer }}</p>
+               </div>
+             }
+             @if (data().faqs.length === 0) {
+               <p class="text-center text-neutral-500 text-[14px]">Nenhuma dúvida frequente adicionada ainda.</p>
+             }
+          </div>
+       </div>
+    </section>
+
+  </main>
+
+  <!-- Footer & Contato -->
+  <footer id="contact" class="bg-white dark:bg-neutral-900 border-t border-black/5 dark:border-white/5 pt-16 pb-12 animate-section text-center">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col items-center">
+      <h2 class="text-[24px] font-bold tracking-tight mb-4">{{ data().contact.title }}</h2>
+      <p class="text-[16px] text-neutral-600 dark:text-neutral-400 mb-10 max-w-lg leading-relaxed whitespace-pre-wrap">{{ data().contact.description }}</p>
+
+      <!-- Contact Form -->
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmitMessage()" class="w-full max-w-md flex flex-col gap-4 text-left mb-16">
+        @if (submitSuccess) {
+          <div class="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 p-4 rounded-xl text-[14px] font-medium text-center border border-emerald-200 dark:border-emerald-800">
+            Mensagem enviada com sucesso! Em breve entrarei em contato.
+          </div>
+        }
+        @if (submitError) {
+          <div class="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 p-4 rounded-xl text-[14px] font-medium text-center border border-red-200 dark:border-red-800">
+            {{ submitErrorMessage || 'Erro ao enviar a mensagem. Tente novamente mais tarde.' }}
+          </div>
+        }
+        
+        <div class="flex flex-col gap-1.5">
+          <label for="contactName" class="text-[14px] font-medium text-neutral-700 dark:text-neutral-300">Nome</label>
+          <input id="contactName" type="text" formControlName="name" placeholder="Seu nome" class="w-full bg-white dark:bg-neutral-800 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-violet-500/50">
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="contactEmail" class="text-[14px] font-medium text-neutral-700 dark:text-neutral-300">E-mail</label>
+          <input id="contactEmail" type="email" formControlName="email" placeholder="seu@email.com" class="w-full bg-white dark:bg-neutral-800 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-violet-500/50">
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="contactMessage" class="text-[14px] font-medium text-neutral-700 dark:text-neutral-300">Mensagem</label>
+          <textarea id="contactMessage" formControlName="message" placeholder="Como posso ajudar no seu projeto?" rows="4" class="w-full bg-white dark:bg-neutral-800 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-y"></textarea>
+        </div>
+        <button type="submit" [disabled]="contactForm.invalid || isSubmitting" class="mt-2 w-full flex items-center justify-center gap-2 bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-6 py-3.5 rounded-xl font-medium text-[16px] hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (isSubmitting) {
+            <iconify-icon icon="lucide:loader-2" class="animate-spin text-[20px]"></iconify-icon>
+            Enviando...
+          } @else {
+            <iconify-icon icon="lucide:send" class="text-[18px]"></iconify-icon>
+            Enviar Mensagem
+          }
+        </button>
+      </form>
+      
+      <div class="flex gap-4 mb-16">
+        <a [href]="'mailto:' + data().contact.email" aria-label="Email" class="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded-xl flex items-center justify-center hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 transition-colors shadow-sm text-[24px]">
+          <iconify-icon icon="lucide:mail"></iconify-icon>
+        </a>
+        @for (social of data().socials; track social.id) {
+          <a [href]="social.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="social.platform" class="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded-xl flex items-center justify-center hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-neutral-900 transition-colors shadow-sm text-[24px]">
+            <iconify-icon [icon]="social.icon || 'lucide:link'"></iconify-icon>
+          </a>
+        }
+      </div>
+
+      <div class="text-[12px] text-neutral-500 dark:text-neutral-500 font-medium flex items-center justify-center gap-2">
+        {{ data().contact.footerText }}
+        <span>•</span>
+        <a routerLink="/admin" class="hover:text-brand-neon dark:hover:text-violet-400 transition-colors inline-flex items-center gap-1 group">
+          <iconify-icon icon="lucide:lock" class="text-[12px] group-hover:scale-110 transition-transform"></iconify-icon> CMS
+        </a>
+      </div>
+    </div>
+  </footer>
+</div>

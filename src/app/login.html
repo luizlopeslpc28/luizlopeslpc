@@ -1,0 +1,46 @@
+<div class="min-h-screen bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 pb-16 font-sans">
+  <!-- Login Screen -->
+  <div class="max-w-[400px] mx-auto pt-24 px-6">
+    <div class="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-8 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+      
+      <div class="mb-8">
+        <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 mx-auto">
+          <iconify-icon icon="lucide:lock" class="text-xl"></iconify-icon>
+        </div>
+        <h1 class="text-xl font-bold mb-1 text-center">Login no CMS</h1>
+        <p class="text-sm text-neutral-500 dark:text-neutral-400 text-center">Acesse o seu painel de controle</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="flex flex-col gap-6">
+        @if (loginError) {
+          <div class="bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg text-sm border border-red-200 dark:border-red-900/50 text-center font-medium">
+            {{ loginError }}
+          </div>
+        }
+        
+        <div>
+          <label for="emailInput" class="block text-sm font-bold mb-1">E-mail</label>
+          <input id="emailInput" type="email" formControlName="email" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="seu@email.com">
+        </div>
+        <div>
+          <label for="passwordInput" class="block text-sm font-bold mb-1">Senha</label>
+          <input id="passwordInput" type="password" formControlName="password" class="w-full bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="••••••••">
+        </div>
+        
+        <button type="submit" [disabled]="isLoggingIn || loginForm.invalid" class="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700 px-5 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm disabled:opacity-50 mt-2">
+          @if (isLoggingIn) {
+            <iconify-icon icon="lucide:loader-2" class="animate-spin text-lg"></iconify-icon> Entrando...
+          } @else {
+            Entrar <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+          }
+        </button>
+      </form>
+      
+      <div class="mt-8 pt-6 border-t border-neutral-100 dark:border-neutral-800 text-center">
+          <button (click)="goBack()" class="text-neutral-500 hover:text-neutral-900 dark:hover:text-white text-sm transition-colors flex items-center justify-center gap-1.5 mx-auto font-medium">
+              <iconify-icon icon="lucide:arrow-left"></iconify-icon> Voltar ao site
+          </button>
+      </div>
+    </div>
+  </div>
+</div>
