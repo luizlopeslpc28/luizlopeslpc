@@ -13,6 +13,7 @@ import { apiRouter } from './api/index.js';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.json());
 
 app.use('/api', helmet({
