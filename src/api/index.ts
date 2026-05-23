@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { createClient } from '@supabase/supabase-js';
 import * as crypto from 'crypto';
 import rateLimit from 'express-rate-limit';
+import nodemailer from 'nodemailer';
 
 export const apiRouter = Router();
 
@@ -79,6 +80,39 @@ apiRouter.post('/messages', contactLimiter, async (req, res) => {
       return;
     }
   }
+
+  // Send Email using Nodemailer pointing to Gmail
+  const gmailUser = process.env['GMAIL_USER'];
+  const gmailPass = process.env['GMAIL_APP_PASSWORD'];
+
+  if (gmailUser && gmailPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
+        },
+      });
+
+      const mailOptions = {
+        from: `"${name}" <${gmailUser}>`,
+        replyTo: email,
+        to: gmailUser, // send to your own email Let's use gmailUser
+        subject: `Novo contato via Portfólio: ${name}`,
+        text: `Nome: ${name}\nE-mail: ${email}\n\nMensagem:\n${message}`,
+        html: `<p><strong>Nome:</strong> ${name}</p>
+               <p><strong>E-mail:</strong> ${email}</p>
+               <p><strong>Mensagem:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>`
+      };
+
+      await transporter.sendMail(mailOptions);
+    } catch (e) {
+      console.error('Failed to send email:', e);
+      // We still want to return a success to the user that the message was received by the system.
+    }
+  }
+
   res.status(200).json({ success: true });
 });
 

@@ -133,7 +133,8 @@ export class DataService {
 
   private async loadData() {
     try {
-      const baseUrl = isPlatformServer(this.platformId) ? (process.env['APP_URL'] || 'http://0.0.0.0:3000') : '';
+      const port = typeof process !== 'undefined' && process.env ? (process.env['PORT'] || 3000) : 3000;
+      const baseUrl = isPlatformServer(this.platformId) ? ((typeof process !== 'undefined' && process.env ? process.env['APP_URL'] : null) || `http://127.0.0.1:${port}`) : '';
       const response = await firstValueFrom(this.http.get<any>(`${baseUrl}/api/content`, { withCredentials: true }));
       if (response && response.config) {
         this.data.set(response);
